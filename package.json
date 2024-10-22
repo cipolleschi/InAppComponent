@@ -36,5 +36,13 @@
   "engines": {
     "node": ">=18"
   },
+  "codegenConfig": {
+    "name": "AppSpecs",
+    "type": "components",
+    "jsSrcsDir": "specs",
+    "android": {
+      "javaPackageName": "com.testrc6.specs"
+    }
+  },
   "packageManager": "yarn@3.6.4"
 }
