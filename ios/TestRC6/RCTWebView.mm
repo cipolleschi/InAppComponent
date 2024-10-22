@@ -15,7 +15,7 @@
 
 using namespace facebook::react;
 
-@interface RCTWebView () <RCTWebViewViewProtocol, WKNavigationDelegate>
+@interface RCTWebView () <RCTCustomWebViewViewProtocol, WKNavigationDelegate>
 @end
 
 @implementation RCTWebView {
@@ -36,8 +36,8 @@ using namespace facebook::react;
 
 - (void)updateProps:(Props::Shared const &)props oldProps:(Props::Shared const &)oldProps
 {
-  const auto &oldViewProps = *std::static_pointer_cast<WebViewProps const>(_props);
-  const auto &newViewProps = *std::static_pointer_cast<WebViewProps const>(props);
+  const auto &oldViewProps = *std::static_pointer_cast<CustomWebViewProps const>(_props);
+  const auto &newViewProps = *std::static_pointer_cast<CustomWebViewProps const>(props);
   
   _webView.backgroundColor = UIColor.redColor;
   // Handle your props here
@@ -55,7 +55,7 @@ using namespace facebook::react;
 - (BOOL)urlIsValid:(std::string)propString
 {
   if (propString.length() > 0 && !_sourceURL) {
-    WebViewEventEmitter::OnScriptLoaded result = WebViewEventEmitter::OnScriptLoaded{WebViewEventEmitter::OnScriptLoadedResult::Error};
+    CustomWebViewEventEmitter::OnScriptLoaded result = CustomWebViewEventEmitter::OnScriptLoaded{CustomWebViewEventEmitter::OnScriptLoadedResult::Error};
     
     self.eventEmitter.onScriptLoaded(result);
     return NO;
@@ -65,7 +65,7 @@ using namespace facebook::react;
 
 -(void)webView:(WKWebView *)webView didFinishNavigation:(WKNavigation *)navigation
 {
-  WebViewEventEmitter::OnScriptLoaded result = WebViewEventEmitter::OnScriptLoaded{WebViewEventEmitter::OnScriptLoadedResult::Success};
+  CustomWebViewEventEmitter::OnScriptLoaded result = CustomWebViewEventEmitter::OnScriptLoaded{CustomWebViewEventEmitter::OnScriptLoadedResult::Success};
   self.eventEmitter.onScriptLoaded(result);
 }
 
@@ -78,14 +78,14 @@ using namespace facebook::react;
 }
 
 // Event emitter convenience method
-- (const WebViewEventEmitter &)eventEmitter
+- (const CustomWebViewEventEmitter &)eventEmitter
 {
-  return static_cast<const WebViewEventEmitter &>(*_eventEmitter);
+  return static_cast<const CustomWebViewEventEmitter &>(*_eventEmitter);
 }
 
 + (ComponentDescriptorProvider)componentDescriptorProvider
 {
-  return concreteComponentDescriptorProvider<WebViewComponentDescriptor>();
+  return concreteComponentDescriptorProvider<CustomWebViewComponentDescriptor>();
 }
 
 Class<RCTComponentViewProtocol> WebViewCls(void)
